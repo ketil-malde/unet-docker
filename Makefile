@@ -1,4 +1,5 @@
-# Change the configuration here:
+# Change the configuration here.
+# Include your useid/name as part of IMAGENAME to avoid conflicts
 IMAGENAME = docker-test
 COMMAND   = bash
 # No need to change anything below this line
@@ -6,7 +7,7 @@ COMMAND   = bash
 # Allows you to use sshfs to mount disks
 SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
 
-.docker: Dockerfile
+.docker: Dockerfile requirements.txt
 	docker build -t $(IMAGENAME) .
 	touch .docker
 
