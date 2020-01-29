@@ -2,7 +2,7 @@
 # Include your useid/name as part of IMAGENAME to avoid conflicts
 IMAGENAME = docker-test
 COMMAND   = bash
-DISKS     = -v /data/deep/data:/data -v $(PWD):/project
+DISKS     = -v /data/deep/data:/data:ro -v $(PWD):/project
 USERID      = --user $(shell id -u):$(shell id -g)
 USERNAME  = $(shell whoami)
 # No need to change anything below this line
