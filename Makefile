@@ -15,7 +15,7 @@ SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
 	touch .docker
 
 # Using -it for interactive use
-RUNCMD=docker run --rm $(USERID) $(SSHFSOPTIONS) $(DISKS) -it $(IMAGENAME)
+RUNCMD=docker run --rm $(USERID) $(SSHFSOPTIONS) $(DISKS) -it $(USERNAME)-$(IMAGENAME)
 
 # Replace 'bash' with the command you want to do
 default: .docker
