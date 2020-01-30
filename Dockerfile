@@ -5,16 +5,19 @@ FROM nvidia/cuda
 WORKDIR /project
 
 # Copy what you need into the working directory
-COPY requirements.txt /
+COPY requirements-pip.txt /
+COPY requirements-apt.txt /
 
-# Install any needed packages specified in requirements.txt
+# User configuration - override with --build-arg
 ARG user=myuser
 ARG group=mygroup
 ARG uid=1000
 ARG gid=1000
 
-RUN apt-get update && apt-get install -y python3 python3-pip sshfs
-RUN pip3 install --trusted-host pypi.python.org -r /requirements.txt
+# Install any needed packages specified in requirements-*.txt
+RUN apt-get update && grep -v ^# /requirements-apt.txt | xargs apt-get install -y 
+RUN pip3 install --trusted-host pypi.python.org -r /requirements-pip.txt
+
 RUN groupadd -g $gid $user
 RUN useradd -u $uid -g $gid $user
 

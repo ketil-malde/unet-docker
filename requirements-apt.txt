@@ -1,0 +1,4 @@
+# List dependencies to be installed via apt-get below
+python3
+python3-pip
+sshfs

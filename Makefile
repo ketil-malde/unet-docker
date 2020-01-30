@@ -11,7 +11,7 @@ USERNAME  = $(shell whoami)
 # Allows you to use sshfs to mount disks
 SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
 
-.docker: Dockerfile requirements.txt
+.docker: Dockerfile requirements-apt.txt requirements-pip.txt
 	docker build --build-arg user=$(USERNAME) --build-arg uid=$(USERID) --build-arg gid=$(GROUPID) -t $(USERNAME)-$(IMAGENAME) .
 	touch .docker
 
