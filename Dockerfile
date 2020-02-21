@@ -27,8 +27,8 @@ RUN useradd -u $uid -g $gid $user
 RUN usermod -a -G sudo $user
 RUN passwd -d $user
 
-# Make port 80 available to the world outside this container
-# EXPOSE 80
+# Make port 8888 available to the world outside this container (for jupyter notebooks)
+EXPOSE 8888
 
 # Define environment variable
 # Use only GPU 0
