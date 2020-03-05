@@ -1,7 +1,0 @@
-# List dependencies to be installed via apt-get below
-python3
-python3-pip
-sshfs
-python3-ipython
-python3-notebook
-jupyter

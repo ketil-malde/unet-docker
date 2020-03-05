@@ -1,6 +1,7 @@
 # Change the configuration here.
 # Include your useid/name as part of IMAGENAME to avoid conflicts
 IMAGENAME = docker-test
+CONFIG    = basic
 COMMAND   = bash
 DISKS     = -v /data/deep/data:/data:ro -v $(PWD):/project
 USERID    = $(shell id -u)
@@ -14,9 +15,10 @@ RUNTIME   =
 # Allows you to use sshfs to mount disks
 SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
 
-.docker: Dockerfile requirements-apt.txt requirements-pip.txt
-	docker build --build-arg user=$(USERNAME) --build-arg uid=$(USERID) --build-arg gid=$(GROUPID) -t $(USERNAME)-$(IMAGENAME) .
-	touch .docker
+USERCONFIG   = --build-arg user=$(USERNAME) --build-arg uid=$(USERID) --build-arg gid=$(GROUPID)
+
+.docker: docker/Dockerfile-$(CONFIG)
+	docker build $(USERCONFIG) -t $(USERNAME)-$(IMAGENAME) -f docker/Dockerfile-$(CONFIG) .
 
 # Using -it for interactive use
 RUNCMD=docker run $(RUNTIME) --rm --user $(USERID):$(GROUPID) $(PORT) $(SSHFSOPTIONS) $(DISKS) -it $(USERNAME)-$(IMAGENAME)
