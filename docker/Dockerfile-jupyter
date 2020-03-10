@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/project
 
 # Install any needed packages from apt
-RUN apt-get update && apt-get install -y sudo python3 python3-pip
+RUN apt-get update && apt-get install -y sudo python3 python3-pip sshfs python3-ipython python3-notebook jupyter
 # RUN pip3 install --trusted-host pypi.python.org -r xxxx
 
 # Configure user
@@ -23,6 +23,13 @@ RUN groupadd -g $gid $user
 RUN useradd -u $uid -g $gid $user
 RUN usermod -a -G sudo $user
 RUN passwd -d $user
+
+# Make port 8888 available to the world outside this container (for jupyter notebooks)
+EXPOSE 8888
+
+# Define environment variable
+# Use only GPU 0
+ENV CUDA_VISIBLE_DEVICES 0
 
 # Run when the container launches
 CMD "bash"

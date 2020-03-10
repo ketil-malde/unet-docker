@@ -18,7 +18,7 @@ SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
 USERCONFIG   = --build-arg user=$(USERNAME) --build-arg uid=$(USERID) --build-arg gid=$(GROUPID)
 
 .docker: docker/Dockerfile-$(CONFIG)
-	docker build $(USERCONFIG) -t $(USERNAME)-$(IMAGENAME) -f docker/Dockerfile-$(CONFIG) .
+	docker build $(USERCONFIG) -t $(USERNAME)-$(IMAGENAME) -f docker/Dockerfile-$(CONFIG) docker
 
 # Using -it for interactive use
 RUNCMD=docker run $(RUNTIME) --rm --user $(USERID):$(GROUPID) $(PORT) $(SSHFSOPTIONS) $(DISKS) -it $(USERNAME)-$(IMAGENAME)
@@ -27,5 +27,6 @@ RUNCMD=docker run $(RUNTIME) --rm --user $(USERID):$(GROUPID) $(PORT) $(SSHFSOPT
 default: .docker
 	$(RUNCMD) $(COMMAND)
 
+# requires CONFIG=jupyter
 jupyter:
 	$(RUNCMD) jupyter notebook --ip '$(hostname -I)' --port 8888
