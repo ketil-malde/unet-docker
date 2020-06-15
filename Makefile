@@ -1,9 +1,10 @@
 # Change the configuration here.
 # Include your useid/name as part of IMAGENAME to avoid conflicts
-IMAGENAME = docker-test
-CONFIG    = basic
+IMAGENAME = unet
+CONFIG    = tensorflow
 COMMAND   = bash
-DISKS     = -v /data/deep/data:/data:ro -v $(PWD):/project
+DISKS     = -v $(PWD)/../imagesim-docker:/data:ro -v $(PWD):/project
+# DISKS     = -v /data/deep/data:/data:ro -v $(PWD):/project
 USERID    = $(shell id -u)
 GROUPID   = $(shell id -g)
 USERNAME  = $(shell whoami)
@@ -27,6 +28,11 @@ RUNCMD=docker run $(RUNTIME) --rm --user $(USERID):$(GROUPID) $(PORT) $(SSHFSOPT
 default: .docker
 	$(RUNCMD) $(COMMAND)
 
-# requires CONFIG=jupyter
-jupyter:
-	$(RUNCMD) jupyter notebook --ip '$(hostname -I)' --port 8888
+$(WEIGHTS): src/download_weights.py
+	$(RUNCMD) python3 src/download_weights.py
+
+train: .docker src/train.py $(WEIGHTS)
+	$(RUNCMD) python3 src/train.py
+
+test: .docker src/test.py $(WEIGHTS)
+	$(RUNCMD) python3 src/test.py
