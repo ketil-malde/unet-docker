@@ -46,11 +46,13 @@ def my_generator(batch_size, images_dirs):
             h, w, c = img.shape
             mask = np.zeros([h, w, num_classes])
             with open(ann) as af:
+                nr = 0
                 for p,xmin,ymin,xmax,ymax,classname in csv.reader(af):
                     class_id = C.class_names.index(classname)
-                    m = io.imread(f[:-4]+'_mask_'+str(i)+'.png', as_gray = True)
+                    m = io.imread(f[:-4]+'_mask_'+str(nr)+'.png', as_gray = True)
                     #print('m max:', np.max(m), 'shape:', m.shape)
                     mask[:,:,class_id] += m
+                    nr += 1
             # todo: augment using the same ops on img and mask, (scipy.ndimage?)
             # resize, and then...
             imgs[i] = T.resize(img, (width,height), anti_aliasing=True)
@@ -65,4 +67,5 @@ g = my_generator(C.batch_size, C.train_dirs)
         
 model = unet()
 # model_checkpoint = ModelCheckpoint('unet_membrane.hdf5', monitor='loss',verbose=1, save_best_only=True)
-model.fit_generator(g, steps_per_epoch=300, epochs=1, callbacks=[logger]) # callbacks=[model_checkpoint,logger])
+model.fit_generator(g, steps_per_epoch=300, epochs=10, callbacks=[logger]) # callbacks=[model_checkpoint,logger])
+model.save_weights('unet_weights.h5')
