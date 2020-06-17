@@ -5,13 +5,13 @@ CONFIG    = tensorflow
 COMMAND   = bash
 DISKS     = -v $(PWD)/../imagesim-docker:/data:ro -v $(PWD):/project
 # DISKS     = -v /data/deep/data:/data:ro -v $(PWD):/project
+PORT      =
+GPU       = 0
+RUNTIME   = --gpus device=$(GPU)
+# No need to change anything below this line
 USERID    = $(shell id -u)
 GROUPID   = $(shell id -g)
 USERNAME  = $(shell whoami)
-PORT      = -p 8888:8888
-RUNTIME   =
-# --runtime=nvidia 
-# No need to change anything below this line
 
 # Allows you to use sshfs to mount disks
 SSHFSOPTIONS = --cap-add SYS_ADMIN --device /dev/fuse
