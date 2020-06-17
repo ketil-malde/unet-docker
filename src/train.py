@@ -49,7 +49,7 @@ def my_generator(batch_size, images_dirs):
                 nr = 0
                 for p,xmin,ymin,xmax,ymax,classname in csv.reader(af):
                     class_id = C.class_names.index(classname)
-                    m = io.imread(f[:-4]+'_mask_'+str(nr)+'.png', as_gray = True)
+                    m = io.imread(os.path.join(os.path.dirname(f),'mask_'+os.path.basename(f)[:-4]+'_'+str(nr)+'.png'), as_gray = True)
                     #print('m max:', np.max(m), 'shape:', m.shape)
                     mask[:,:,class_id] += m
                     nr += 1
