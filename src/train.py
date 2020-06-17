@@ -25,7 +25,7 @@ def my_generator(batch_size, images_dirs):
     num_classes = len(C.class_names)
 
     for images_dir in images_dirs:
-        filenames = [os.path.join(images_dir,f) for f in os.listdir(images_dir) if re.match(r'sim-201[78]_[0-9]+\.png', f)]
+        filenames = [os.path.join(images_dir,f) for f in os.listdir(images_dir) if re.match(r'sim-201[78]-[0-9].*\.png', f)]
 
     while True:
         # specifications for this?
@@ -67,5 +67,6 @@ g = my_generator(C.batch_size, C.train_dirs)
         
 model = unet()
 # model_checkpoint = ModelCheckpoint('unet_membrane.hdf5', monitor='loss',verbose=1, save_best_only=True)
-model.fit_generator(g, steps_per_epoch=300, epochs=10, callbacks=[logger]) # callbacks=[model_checkpoint,logger])
-model.save_weights('unet_weights.h5')
+for i in range(20):
+    model.fit_generator(g, steps_per_epoch=300, epochs=10, callbacks=[logger]) # callbacks=[model_checkpoint,logger])
+    model.save_weights('unet_weights_'+str(i)+'.h5')
