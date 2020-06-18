@@ -59,8 +59,6 @@ def my_generator(batch_size, images_dirs):
             masks[i] = T.resize(mask, (width, height), anti_aliasing=False)  # does this work at all?
         yield (imgs, masks)
 
-g = my_generator(C.batch_size, C.train_dirs)
-
 # (i,m) = next(g)
 # print('images=',i.shape, i)
 # print('masks=', m.shape, m)
@@ -68,5 +66,6 @@ g = my_generator(C.batch_size, C.train_dirs)
 model = unet()
 # model_checkpoint = ModelCheckpoint('unet_membrane.hdf5', monitor='loss',verbose=1, save_best_only=True)
 for i in range(20):
+    g = my_generator(C.batch_size, C.train_dirs)
     model.fit_generator(g, steps_per_epoch=300, epochs=10, callbacks=[logger]) # callbacks=[model_checkpoint,logger])
     model.save_weights('unet_weights_'+str(i)+'.h5')
