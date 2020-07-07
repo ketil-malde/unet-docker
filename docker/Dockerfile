@@ -30,5 +30,7 @@ RUN cd Mask_RCNN && python setup.py install
 
 RUN pip3 install --trusted-host pypi.python.org numpy scipy Pillow cython matplotlib scikit-image keras>=2.0.8 opencv-python h5py imgaug IPython
 
+COPY src /src
+
 # Run when the container launches
 CMD "bash"
